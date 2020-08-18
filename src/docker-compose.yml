@@ -1,0 +1,28 @@
+﻿version: '3.4'
+
+networks:
+  taxajuros-network:
+    driver: bridge
+
+services:
+  juros-api:
+    image: jurosservice.api
+    build:
+      context: .
+      dockerfile: JurosService/JurosService.Api/Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - taxajuros-network
+
+  calculadora-api:
+    image: calculadoraservice.api
+    build:
+      context: .
+      dockerfile: CalculadoraService/CalculadoraService.Api/Dockerfile
+    depends_on:
+      - juros-api
+    ports:
+      - "5001:5001"
+    networks:
+      - taxajuros-network
